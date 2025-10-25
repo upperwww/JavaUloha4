@@ -10,4 +10,5 @@ public interface zamestanciService {
     zamestanci findById(int id);
     zamestanci save(zamestanci zamestanci);
     void deleteById(int id);
+
 }

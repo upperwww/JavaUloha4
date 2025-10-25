@@ -1,7 +1,9 @@
 package sk.ukf.restapi.entity;
 
 import jakarta.persistence.*;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -12,15 +14,24 @@ public class zamestanci {
     @Column(name = "id")
     private int id;
 
+    @NotBlank(message = "Meno je povinné")
+    @Size(min = 2, max = 50, message = "Meno musí mať 2-50 znakov")
     @Column(name = "first_name")
     private String firstName;
 
+    @NotBlank(message = "Priezvisko je povinné")
+    @Size(min = 2, max = 50, message = "Priezvisko musí mať 2-50 znakov")
     @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "birth_date")
     private Date birth_date;
 
+    @NotBlank(message = "Email je povinný")
+    @Pattern(
+            regexp = "^[a-zA-Z0-9._%+-]{1,64}@[a-zA-Z0-9.-]{1,253}\\.[a-zA-Z]{2,6}$",
+            message = "Neplatný email"
+    )
     @Column(name = "email")
     private String email;
 
@@ -85,45 +96,4 @@ public class zamestanci {
         this.email = email;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getJob_title() {
-        return job_title;
-    }
-
-    public void setJob_title(String job_title) {
-        this.job_title = job_title;
-    }
-
-    public Float getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Float salary) {
-        this.salary = salary;
-    }
-
-    public boolean getFull_time() {
-        return full_time;
-    }
-
-    public void setFull_time(boolean full_time) {
-        this.full_time = full_time;
-    }
-
-    @Override
-    public String toString() {
-        return "employee{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
 }

@@ -1,7 +1,10 @@
 package sk.ukf.restapi.rest;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sk.ukf.restapi.dto.ApiResponse;
 import sk.ukf.restapi.entity.zamestanci;
 import sk.ukf.restapi.service.zamestanciService;
 
@@ -19,52 +22,48 @@ public class zamestanciRestController {
     }
 
     @GetMapping("/zamestanci")
-    public List<zamestanci> findAll() {
-        return zamestanciService.findAll();
+    public ResponseEntity<ApiResponse<List<zamestanci>>> findAll() {
+        List<zamestanci> zamestanci = zamestanciService.findAll();
+        return ResponseEntity.ok(ApiResponse.success(zamestanci, "Úspešne načítané"));
     }
 
     @GetMapping("/zamestanci/{id}")
-    public zamestanci getZamestnanec(@PathVariable int id) {
-
+    public ResponseEntity<ApiResponse<zamestanci>> getZamestnanec(@PathVariable int id) {
         zamestanci zamestnanec = zamestanciService.findById(id);
-
         if (zamestnanec == null) {
             throw new RuntimeException("Zamestnanec id not found - " + id);
         }
-
-        return zamestnanec;
+        return ResponseEntity.ok(ApiResponse.success(zamestnanec, "Úspešne načítané"));
     }
 
     @PostMapping("/zamestanci")
-    public zamestanci addZamestnanec(@RequestBody zamestanci zamestnanec) {
+    public ResponseEntity<ApiResponse<zamestanci>> addZamestnanec(@Valid @RequestBody zamestanci zamestnanec) {
         zamestnanec.setId(0);
         zamestanci zamestnanec_db = zamestanciService.save(zamestnanec);
-        return zamestnanec_db;
+        return ResponseEntity.ok(ApiResponse.success(zamestnanec_db, "Úspešne vytvorené"));
     }
 
     @PutMapping("/zamestanci/{id}")
-    public zamestanci updateZamestnanec(@PathVariable int id, @RequestBody zamestanci zamestnanec) {
+    public ResponseEntity<ApiResponse<zamestanci>> updateZamestnanec(@PathVariable int id, @Valid @RequestBody zamestanci zamestnanec) {
         zamestanci existingZamestnanec = zamestanciService.findById(id);
         if (existingZamestnanec == null) {
             throw new RuntimeException("Zamestnanec id not found - " + id);
         }
         zamestnanec.setId(id);
-        zamestanci updatedZamestnanec = zamestanciService.save(zamestnanec);
-        return updatedZamestnanec;
+        zamestanci zamestnanec_db = zamestanciService.save(zamestnanec);
+        return ResponseEntity.ok(ApiResponse.success(zamestnanec_db, "Úspešne aktualizované"));
     }
 
     @DeleteMapping("/zamestanci/{id}")
-    public String deleteZamestnanec(@PathVariable int id) {
-
+    public ResponseEntity<ApiResponse<String>> deleteZamestnanec(@PathVariable int id) {
         zamestanci zamestnanec = zamestanciService.findById(id);
-
         if (zamestnanec == null) {
             throw new RuntimeException("Zamestnanec id not found - " + id);
         }
-
         zamestanciService.deleteById(id);
-
-        return "Deleted zamestnanec id - " + id;
+        return ResponseEntity.ok(ApiResponse.success(null, "Úspešne vymazané"));
     }
-
 }
+
+
+

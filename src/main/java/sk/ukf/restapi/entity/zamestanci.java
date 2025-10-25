@@ -50,10 +50,16 @@ public class zamestanci {
     public zamestanci() {
     }
 
-    public zamestanci(String firstName, String lastName, String email) {
+    public zamestanci(int id, String firstName, String lastName, Date birth_date, String email, String phone, String job_title, Float salary, boolean full_time) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.birth_date = birth_date;
         this.email = email;
+        this.phone = phone;
+        this.job_title = job_title;
+        this.salary = salary;
+        this.full_time = full_time;
     }
 
     public int getId() {
@@ -96,4 +102,35 @@ public class zamestanci {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getJob_title() {
+        return job_title;
+    }
+
+    public void setJob_title(String job_title) {
+        this.job_title = job_title;
+    }
+
+    public Float getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Float salary) {
+        this.salary = salary;
+    }
+
+    public boolean isFull_time() {
+        return full_time;
+    }
+
+    public void setFull_time(boolean full_time) {
+        this.full_time = full_time;
+    }
 }
